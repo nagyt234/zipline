@@ -1,7 +1,7 @@
-# a ZipOutputStream that never rewinds output
+# an OutputStream that never rewinds output
 # in order for that to be possible we store only uncompressed files
 module Zipline
-  class ZipOutputStream < Zip::ZipOutputStream
+  class OutputStream < Zip::OutputStream
 
     #we need to be able to hand out own custom output in order to stream to browser
     def initialize(io)
@@ -17,8 +17,8 @@ module Zipline
 
     def put_next_entry(entry_name, size)
       @givenSize = size
-      #same as normal ZipOutputStream
-      new_entry = Zip::ZipEntry.new(@filename, entry_name)
+      #same as normal OutputStream
+      new_entry = Zip::Entry.new(@filename, entry_name)
 
       #THIS IS THE MAGIC, tells zip to look after data for size, crc
       new_entry.gp_flags = new_entry.gp_flags | 0x0008
